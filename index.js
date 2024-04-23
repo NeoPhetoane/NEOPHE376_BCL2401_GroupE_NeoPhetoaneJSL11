@@ -20,8 +20,35 @@ function initializeData() {
 
 // TASK: Get elements from the DOM
 const elements = {
-
-}
+  sideBarDiv: document.getElementById("side-bar-div"),
+  logo: document.getElementById("logo"),
+  boardsNavLinksDiv: document.getElementById("boards-nav-links-div"),
+  headlineSidePanel: document.getElementById("headline-sidepanel"),
+  layout: document.getElementById("layout"),
+  header: document.getElementById("header"),
+  headerBoardName: document.getElementById("header-board-name"),
+  addNewTaskBtn: document.getElementById("add-new-task-btn"),
+  editBoardBtn: document.getElementById("edit-board-btn"),
+  deleteBoardBtn: document.getElementById("deleteBoardBtn"),
+  todoColumn: document.querySelector('[data-status="todo"]'),
+  doingColumn: document.querySelector('[data-status="doing"]'),
+  doneColumn: document.querySelector('[data-status="done"]'),
+  newTaskModalWindow: document.getElementById("new-task-modal-window"),
+  titleInput: document.getElementById("title-input"),
+  descInput: document.getElementById("desc-input"),
+  selectStatus: document.getElementById("select-status"),
+  createTaskBtn: document.getElementById("create-task-btn"),
+  cancelAddTaskBtn: document.getElementById("cancel-add-task-btn"),
+  editTaskModalWindow: document.querySelector(".edit-task-modal-window"),
+  editTaskForm: document.getElementById("edit-task-form"),
+  editTaskTitleInput: document.getElementById("edit-task-title-input"),
+  editTaskDescInput: document.getElementById("edit-task-desc-input"),
+  editSelectStatus: document.getElementById("edit-select-status"),
+  saveTaskChangesBtn: document.getElementById("save-task-changes-btn"),
+  cancelEditBtn: document.getElementById("cancel-edit-btn"),
+  deleteTaskBtn: document.getElementById("delete-task-btn"),
+  filterDiv: document.getElementById("filterDiv")
+};
 
 let activeBoard = ""
 
@@ -49,13 +76,13 @@ function displayBoards(boards) {
     const boardElement = document.createElement("button");
     boardElement.textContent = board;
     boardElement.classList.add("board-btn");
-    boardElement.click()  { 
+    boardElement.addEventListener("click", function () { 
       elements.headerBoardName.textContent = board;
       filterAndDisplayTasksByBoard(board);
       activeBoard = board //assigns active board
       localStorage.setItem("activeBoard", JSON.stringify(activeBoard))
       styleActiveBoard(activeBoard)
-    };
+    });
     boardsContainer.appendChild(boardElement);
   });
 
