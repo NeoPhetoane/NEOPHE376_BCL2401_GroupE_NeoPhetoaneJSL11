@@ -3,7 +3,6 @@
 import {
   getTasks,
   createNewTask,
-  patchTask,
   putTask,
   deleteTask,
 } from "./utils/taskFunctions.js";
@@ -66,6 +65,7 @@ const elements = {
   editBtn: document.getElementById("edit-btn"),
   deleteTaskBtn: document.getElementById("delete-task-btn"),
   descInput: document.getElementById("desc-input"),
+  sideBarBottom: document.querySelector(".side-bar-bottom"),
 };
 
 let activeBoard = "";
@@ -267,10 +267,25 @@ function toggleSidebar(show) {
     sideBarDiv.style.display = "none";
     showSideBarBtn.style.display = "block";
   }
+  localStorage.setItem("showSideBar", show);
 }
 
+elements.sideBarBottom.style.paddingTop = "300px";
+
 function toggleTheme() {
+  const isLightTheme = document.body.classList.contains("light-theme");
   document.body.classList.toggle("light-theme");
+  localStorage.setItem("light-theme", !isLightTheme ? "enabled" : "disabled");
+
+  if (isLightTheme) {
+    localStorage.setItem("logo-theme", "./assets/logo-dark.svg");
+    localStorage.setItem("light-theme", "disabled");
+  } else {
+    localStorage.setItem("logo-theme", "./assets/logo-light.svg");
+    localStorage.setItem("light-theme", "enabled");
+  }
+
+  elements.logo.src = localStorage.getItem("light-theme");
 }
 
 function openEditTaskModal(task) {
@@ -316,8 +331,8 @@ function saveTaskChanges(taskId) {
 
   // Update task using a hlper functoin
 
-  // putTask(taskId, updatedTask);
-  patchTask(taskId, updatedTask);
+  putTask(taskId, updatedTask);
+
   // Close the modal and refresh the UI to reflect the changes
 
   toggleModal(false, elements.editTaskModal);
@@ -331,10 +346,14 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function init() {
+  if (localStorage.getItem("logo-theme") === "./assets/logo-light.svg") {
+    elements.logo.src = "./assets/logo-light.svg";
+  }
   setupEventListeners();
-  const showSidebar = localStorage.getItem("showSideBar") === "false";
+  const showSidebar = localStorage.getItem("showSideBar") === "true";
   toggleSidebar(showSidebar);
   const isLightTheme = localStorage.getItem("light-theme") === "enabled";
   document.body.classList.toggle("light-theme", isLightTheme);
+  elements.themeSwitch.checked = isLightTheme;
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
 }
