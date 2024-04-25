@@ -285,7 +285,7 @@ function openEditTaskModal(task) {
 
   // Call saveTaskChanges upon click of Save Changes button
   saveTaskChangesBtn.addEventListener("click", () => {
-    saveTaskChanges(task.Id);
+    saveTaskChanges(task.id);
     toggleModal(false, editTaskModal);
     refreshTasksUI();
   });
@@ -302,22 +302,22 @@ function openEditTaskModal(task) {
 
 function saveTaskChanges(taskId) {
   // Get new user inputs
-  // elements.editTaskTitleInput.value = task.title;
-  // elements.editTaskDescInput.value = task.description;
-  // elements.editSelectStatus.value = task.status;
+  const taskTtitleInput = elements.editTaskTitleInput.value;
+  const taskDescInput = elements.editTaskDescInput.value;
+  const selectStatus = elements.editSelectStatus.value;
   // Create an object with the updated task details
   const updatedTask = {
     id: taskId,
-    title: elements.editTaskTitleInput.value,
-    description: elements.editTaskDescInput.value,
-    status: elements.editSelectStatus.value,
+    title: taskTtitleInput,
+    description: taskDescInput,
+    status: selectStatus,
     board: activeBoard,
   };
 
   // Update task using a hlper functoin
 
-  putTask(taskId, updatedTask);
-  // patchTask(taskId, updatedTask);
+  // putTask(taskId, updatedTask);
+  patchTask(taskId, updatedTask);
   // Close the modal and refresh the UI to reflect the changes
 
   toggleModal(false, elements.editTaskModal);
