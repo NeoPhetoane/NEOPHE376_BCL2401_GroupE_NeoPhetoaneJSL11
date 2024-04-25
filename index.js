@@ -275,25 +275,52 @@ function toggleTheme() {
 
 function openEditTaskModal(task) {
   // Set task details in modal inputs
-
+  elements.editTaskTitleInput.value = task.title;
+  elements.editTaskDescInput.value = task.description;
+  elements.editSelectStatus.value = task.status;
   // Get button elements from the task modal
+  const saveTaskChangesBtn = elements.saveTaskChangesBtn;
+  const editTaskModal = elements.editTaskModal;
+  const deleteTaskBtn = elements.deleteTaskBtn;
 
   // Call saveTaskChanges upon click of Save Changes button
+  saveTaskChangesBtn.addEventListener("click", () => {
+    saveTaskChanges(task.Id);
+    toggleModal(false, editTaskModal);
+    refreshTasksUI();
+  });
 
   // Delete task using a helper function and close the task modal
+  deleteTaskBtn.addEventListener("click", () => {
+    deleteTask(task.id);
+    toggleModal(false, editTaskModal);
+    refreshTasksUI();
+  });
 
   toggleModal(true, elements.editTaskModal); // Show the edit task modal
 }
 
 function saveTaskChanges(taskId) {
   // Get new user inputs
-
+  // elements.editTaskTitleInput.value = task.title;
+  // elements.editTaskDescInput.value = task.description;
+  // elements.editSelectStatus.value = task.status;
   // Create an object with the updated task details
+  const updatedTask = {
+    id: taskId,
+    title: elements.editTaskTitleInput.value,
+    description: elements.editTaskDescInput.value,
+    status: elements.editSelectStatus.value,
+    board: activeBoard,
+  };
 
   // Update task using a hlper functoin
 
+  putTask(taskId, updatedTask);
+  // patchTask(taskId, updatedTask);
   // Close the modal and refresh the UI to reflect the changes
 
+  toggleModal(false, elements.editTaskModal);
   refreshTasksUI();
 }
 
@@ -305,7 +332,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function init() {
   setupEventListeners();
-  const showSidebar = localStorage.getItem("showSideBar") === "true";
+  const showSidebar = localStorage.getItem("showSideBar") === "false";
   toggleSidebar(showSidebar);
   const isLightTheme = localStorage.getItem("light-theme") === "enabled";
   document.body.classList.toggle("light-theme", isLightTheme);
